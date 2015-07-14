@@ -1,0 +1,36 @@
+# Blacklists
+blacklist:
+        barrier:
+                items:
+                        - 'minecraft:barrier'
+        spawner:
+                items:
+                        - 'minecraft:mob_spawner'
+                        - 'minecraft:spawn_egg'
+                        - 'minecraft:monster_egg'
+        limited:
+                items:
+                        - 'minecraft:lava_bucket'
+                        - 'minecraft:water_bucket'
+                        - 'minecraft:flint_and_steel'
+                        - 'minecraft:tnt'
+                        - 'minecraft:tnt_minecraft'
+
+# In strings
+# %1$s - player name.
+# %2$s - item name.
+# %3$s - full item nbt.
+# Action when a player spawns an item not in the creative menu.
+unavailable:
+        message: 'You do not have permission for %2$s.'
+        doBroadcast: true
+        broadcastPermission: bukkit.broadcast.admin
+        broadcastMessage: '%1$s attempted to spawn in %3$s'
+        doCommand: true
+        command: kick %1$s You do not have permission for %2$s.
+# Action when a player spawns an item in the creative menu they have no permission for.
+nopermission:
+        message: 'You do not have permission for %2$s.'
+# Action when a player spawns an item which is blacklisted.
+blacklisted:
+        message: 'You do not have permission for %2$s.'
