@@ -6,6 +6,7 @@ package org.cyberiantiger.minecraft.itemcontrol.config;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -16,6 +17,7 @@ public class Config {
     private Action unavailable;
     private Action nopermission;
     private Action blacklisted;
+    private Set<String> whitelist = Collections.emptySet();
 
     public Map<String, Blacklist> getBlacklist() {
         return blacklist;
@@ -31,5 +33,9 @@ public class Config {
 
     public Action getBlacklisted() {
         return blacklisted;
+    }
+
+    public Set<String> getWhitelist() {
+        return whitelist;
     }
 }

@@ -53,7 +53,6 @@ import org.cyberiantiger.minecraft.itemcontrol.items.ItemGroup;
 import org.cyberiantiger.minecraft.itemcontrol.items.ItemGroups;
 import org.cyberiantiger.minecraft.itemcontrol.items.ItemType;
 import org.cyberiantiger.minecraft.nbt.CompoundTag;
-import org.cyberiantiger.minecraft.nbt.ListTag;
 import org.cyberiantiger.minecraft.unsafe.CBShim;
 import org.cyberiantiger.minecraft.unsafe.NBTTools;
 import org.yaml.snakeyaml.Yaml;
@@ -271,7 +270,7 @@ public class Main extends JavaPlugin implements Listener {
                 ItemType type = group.getItems().get(itemId);
                 if (type != null) {
                     if (type.getDamage().contains(damage)) {
-                        if (tag == null || type.getParsedTags().contains(tag)) {
+                        if (tag == null || config.getWhitelist().contains(itemId) || type.getParsedTags().contains(tag)) {
                             found = true;
                             if (whoClicked.hasPermission(PERMISSION_MENU_PREFIX + name)) {
                                 hasAccess = true;
@@ -282,14 +281,27 @@ public class Main extends JavaPlugin implements Listener {
             }
         }
         if (!found) {
-            performAction(config.getUnavailable(), (Player)whoClicked, itemTag);
-        } else if (!hasAccess) {
-            performAction(config.getNopermission(), (Player)whoClicked, itemTag);
+            Action action = config.getUnavailable();
+            if (action.isBlock()) {
+                performAction(action, (Player)whoClicked, itemTag);
+                return hasAccess;
+            }
+        } 
+        if (!hasAccess) {
+            Action action = config.getNopermission();
+            if (action.isBlock()) {
+                performAction(action, (Player)whoClicked, itemTag);
+                return hasAccess;
+            }
         }
-        return hasAccess;
+        return true;
     }
 
     private boolean checkBlacklist(HumanEntity whoClicked, CompoundTag itemTag) {
+        Action blacklistAction = config.getBlacklisted();
+        if (!blacklistAction.isBlock()) {
+            return true;
+        }
         String itemId = itemTag.getString("id");
         if (itemId == null) {
             return false;
@@ -302,7 +314,7 @@ public class Main extends JavaPlugin implements Listener {
                     value.getItems().contains(itemId)
                     ) 
             {
-                performAction(config.getBlacklisted(), (Player)whoClicked, itemTag);
+                performAction(blacklistAction, (Player)whoClicked, itemTag);
                 return false;
             }
         }

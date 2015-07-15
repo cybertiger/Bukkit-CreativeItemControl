@@ -1,36 +1,72 @@
-# Blacklists
+# Custom blacklists
 blacklist:
-        barrier:
+        basic:
                 items:
                         - 'minecraft:barrier'
+                        - 'minecraft:water_bucket'
+                        - 'minecraft:flint_and_steel'
+                        - 'minecraft:monster_egg'
         spawner:
                 items:
                         - 'minecraft:mob_spawner'
                         - 'minecraft:spawn_egg'
-                        - 'minecraft:monster_egg'
         limited:
                 items:
                         - 'minecraft:lava_bucket'
-                        - 'minecraft:water_bucket'
-                        - 'minecraft:flint_and_steel'
                         - 'minecraft:tnt'
-                        - 'minecraft:tnt_minecraft'
+                        - 'minecraft:tnt_minecart'
+
+# Whitelist - items to allow arbitrary nbt on.
+# Enchanted items may not be safe e.g. looting 32000.
+whitelist:
+        - 'minecraft:skull'
+        - 'minecraft:banner'
+        - 'minecraft:bow'
+        - 'minecraft:iron_sword'
+        - 'minecraft:wooden_sword'
+        - 'minecraft:stone_sword'
+        - 'minecraft:diamond_sword'
+        - 'minecraft:golden_sword'
+        - 'minecraft:leather_helmet'
+        - 'minecraft:leather_chestplate'
+        - 'minecraft:leather_leggings'
+        - 'minecraft:leather_boots'
+        - 'minecraft:chainmail_helmet'
+        - 'minecraft:chainmail_chestplate'
+        - 'minecraft:chainmail_leggings'
+        - 'minecraft:chainmail_boots'
+        - 'minecraft:iron_helmet'
+        - 'minecraft:iron_chestplate'
+        - 'minecraft:iron_leggings'
+        - 'minecraft:iron_boots'
+        - 'minecraft:diamond_helmet'
+        - 'minecraft:diamond_chestplate'
+        - 'minecraft:diamond_leggings'
+        - 'minecraft:diamond_boots'
+        - 'minecraft:golden_helmet'
+        - 'minecraft:golden_chestplate'
+        - 'minecraft:golden_leggings'
+        - 'minecraft:golden_boots'
 
 # In strings
 # %1$s - player name.
 # %2$s - item name.
 # %3$s - full item nbt.
+
 # Action when a player spawns an item not in the creative menu.
 unavailable:
+        block: true
         message: 'You do not have permission for %2$s.'
         doBroadcast: true
         broadcastPermission: bukkit.broadcast.admin
         broadcastMessage: '%1$s attempted to spawn in %3$s'
-        doCommand: true
+        doCommand: false
         command: kick %1$s You do not have permission for %2$s.
 # Action when a player spawns an item in the creative menu they have no permission for.
 nopermission:
+        block: true
         message: 'You do not have permission for %2$s.'
 # Action when a player spawns an item which is blacklisted.
 blacklisted:
+        block: true
         message: 'You do not have permission for %2$s.'

@@ -9,12 +9,13 @@ package org.cyberiantiger.minecraft.itemcontrol.config;
  * @author antony
  */
 public class Action {
-    public String message;
-    public boolean doBroadcast;
-    public String broadcastPermission;
-    public String broadcastMessage;
-    public boolean doCommand;
-    public String command;
+    private boolean block;
+    private String message;
+    private boolean doBroadcast;
+    private String broadcastPermission;
+    private String broadcastMessage;
+    private boolean doCommand;
+    private String command;
 
     public String getMessage() {
         return message;
@@ -40,8 +41,12 @@ public class Action {
         return command;
     }
 
+    public boolean isBlock() {
+        return block;
+    }
+
     @Override
     public String toString() {
-        return "Action{" + "message=" + message + ", doBroadcast=" + doBroadcast + ", broadcastPermission=" + broadcastPermission + ", broadcastMessage=" + broadcastMessage + ", doCommand=" + doCommand + ", command=" + command + '}';
+        return "Action{" + "block=" + block + ", message=" + message + ", doBroadcast=" + doBroadcast + ", broadcastPermission=" + broadcastPermission + ", broadcastMessage=" + broadcastMessage + ", doCommand=" + doCommand + ", command=" + command + '}';
     }
 }
