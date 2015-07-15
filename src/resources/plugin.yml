@@ -39,7 +39,7 @@ permissions:
                     creativeitemcontrol.menu.decoration: true
                     creativeitemcontrol.menu.redstone: true
                     creativeitemcontrol.menu.transportation: true
-                    creativeitemcontrol.menu.miscellanious: true
+                    creativeitemcontrol.menu.miscellaneous: true
                     creativeitemcontrol.menu.foodstuffs: true
                     creativeitemcontrol.menu.tools: true
                     creativeitemcontrol.menu.combat: true
@@ -48,7 +48,7 @@ permissions:
         creativeitemcontrol.menu.building:
                 description: Gives access to the creative menu building tab.
                 default: true
-        creativeitemcontrol.mneu.decoration:
+        creativeitemcontrol.menu.decoration:
                 description: Gives access to the creative menu decoration tab.
                 default: true
         creativeitemcontrol.menu.redstone:
@@ -57,7 +57,7 @@ permissions:
         creativeitemcontrol.menu.transportation:
                 description: Gives access to the creative menu transportation tab.
                 default: true
-        creativeitemcontrol.menu.miscellanious:
+        creativeitemcontrol.menu.miscellaneous:
                 description: Gives access to the creative menu miscellaneous tab.
                 default: true
         creativeitemcontrol.menu.foodstuffs:

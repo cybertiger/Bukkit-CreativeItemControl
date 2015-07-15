@@ -222,7 +222,7 @@ groups:
             'minecraft:carrot_on_a_stick': {}
             'minecraft:tnt_minecart': {}
             'minecraft:hopper_minecart': {}
-    miscellanious:
+    miscellaneous:
         items:
             'minecraft:beacon': {}
             'minecraft:bucket': {}
