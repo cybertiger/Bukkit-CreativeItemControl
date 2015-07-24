@@ -264,16 +264,21 @@ public class Main extends JavaPlugin implements Listener {
         Short damage = itemTag.getShort("Damage");
         CompoundTag tag = itemTag.getCompound("tag");
         if (itemId != null) {
-            for (Map.Entry<String,ItemGroup> e : itemGroups.getGroups().entrySet()) {
-                String name = e.getKey();
-                ItemGroup group = e.getValue();
-                ItemType type = group.getItems().get(itemId);
-                if (type != null) {
-                    if (type.getDamage().contains(damage)) {
-                        if (tag == null || config.getWhitelist().contains(itemId) || type.getParsedTags().contains(tag)) {
-                            found = true;
-                            if (whoClicked.hasPermission(PERMISSION_MENU_PREFIX + name)) {
-                                hasAccess = true;
+            if (config.getWhitelist().contains(itemId)) {
+                found = true;
+                hasAccess = true;
+            } else {
+                for (Map.Entry<String,ItemGroup> e : itemGroups.getGroups().entrySet()) {
+                    String name = e.getKey();
+                    ItemGroup group = e.getValue();
+                    ItemType type = group.getItems().get(itemId);
+                    if (type != null) {
+                        if (type.getDamage().contains(damage)) {
+                            if (tag == null || type.getParsedTags().contains(tag)) {
+                                found = true;
+                                if (whoClicked.hasPermission(PERMISSION_MENU_PREFIX + name)) {
+                                    hasAccess = true;
+                                }
                             }
                         }
                     }
