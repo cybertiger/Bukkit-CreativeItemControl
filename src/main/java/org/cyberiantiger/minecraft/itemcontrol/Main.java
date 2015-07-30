@@ -210,17 +210,13 @@ public class Main extends JavaPlugin implements Listener {
                 clickedTag = tools.readItemStack(cursor);
             }
             if (clickedTag != null) {
-                if (!whoClicked.hasPermission(PERMISSION_BLACKLIST_BYPASS)) {
-                    if (!checkBlacklist(whoClicked, clickedTag)) {
-                        e.setCancelled(true);
-                        return;
-                    }
+                if (!whoClicked.hasPermission(PERMISSION_BLACKLIST_BYPASS) && !checkBlacklist(whoClicked, clickedTag)) {
+                    e.setCancelled(true);
+                    return;
                 }
-                if (!emptyCursor && !cursor.isSimilar(expectedCursor)) {
-                    if (!checkMenuAccess(whoClicked, clickedTag)) {
-                        e.setCancelled(true);
-                        return;
-                    }
+                if (!emptyCursor && !cursor.isSimilar(expectedCursor) && !checkMenuAccess(whoClicked, clickedTag)) {
+                    e.setCancelled(true);
+                    return;
                 }
             }
         }
