@@ -203,22 +203,25 @@ public class Main extends JavaPlugin implements Listener {
             ItemStack expectedCursor = playerCursors.getOrDefault(whoClicked, EMPTY_CURSOR);
             ItemStack cursor = e.getCursor();
             CompoundTag clickedTag;
-            if (cursor.isSimilar(EMPTY_CURSOR)) {
+            boolean emptyCursor = cursor.isSimilar(EMPTY_CURSOR);
+            if (emptyCursor) {
                 clickedTag = tools.readItemStack(e.getCurrentItem());
             } else {
                 clickedTag = tools.readItemStack(cursor);
             }
-            if (!whoClicked.hasPermission(PERMISSION_BLACKLIST_BYPASS)) {
-                if (!checkBlacklist(whoClicked, clickedTag)) {
-                    e.setCancelled(true);
-                    return;
+            if (clickedTag != null) {
+                if (!whoClicked.hasPermission(PERMISSION_BLACKLIST_BYPASS)) {
+                    if (!checkBlacklist(whoClicked, clickedTag)) {
+                        e.setCancelled(true);
+                        return;
+                    }
                 }
-            }
-            if (!cursor.isSimilar(EMPTY_CURSOR) && !cursor.isSimilar(expectedCursor)) {
-                if (!checkMenuAccess(whoClicked, clickedTag)) {
-                    e.setCancelled(true);
-                    return;
-                } 
+                if (!emptyCursor && !cursor.isSimilar(expectedCursor)) {
+                    if (!checkMenuAccess(whoClicked, clickedTag)) {
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
             }
         }
     }
