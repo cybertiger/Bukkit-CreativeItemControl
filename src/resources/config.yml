@@ -52,21 +52,33 @@ whitelist:
 # %1$s - player name.
 # %2$s - item name.
 # %3$s - full item nbt.
+# Note: you can limit the length of the strings with the following:
+# %3$.80s - full item nbt (limited to 80 characters).
 
 # Action when a player spawns an item not in the creative menu.
 unavailable:
-        block: true
+# Optional, defaults to true
+#        block: true
+
+# Optional, if not set, no message is sent.
         message: 'You do not have permission for %2$s.'
-        doBroadcast: true
-        broadcastPermission: bukkit.broadcast.admin
+
+# Optional, defaults to bukkit.broadcast.admin
+#        broadcastPermission: bukkit.broadcast.admin
+
+# Optional, if not set, no broadcast is sent.
         broadcastMessage: '%1$s attempted to spawn in %3$s'
-        doCommand: false
-        command: kick %1$s You do not have permission for %2$s.
+
+# List of commands, to run.
+#        commands: 
+#                - 'kick %1$s You do not have permission for %2$s.'
+
 # Action when a player spawns an item in the creative menu they have no permission for.
+# Any of the values from the unavailable action can be set here.
 nopermission:
-        block: true
         message: 'You do not have permission for %2$s.'
+
 # Action when a player spawns an item which is blacklisted.
+# Any of the values from the unavailable action can be set here.
 blacklisted:
-        block: true
         message: 'You do not have permission for %2$s.'

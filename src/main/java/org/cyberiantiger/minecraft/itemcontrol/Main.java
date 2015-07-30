@@ -329,12 +329,14 @@ public class Main extends JavaPlugin implements Listener {
         String name = player.getName();
         String id = itemTag.getString("id");
         String item = itemTag.toString();
-        player.sendMessage(String.format(action.getMessage(), name, id, item));
-        if (action.isDoBroadcast()) {
+        if (action.getMessage() != null) {
+            player.sendMessage(String.format(action.getMessage(), name, id, item));
+        }
+        if (action.getBroadcastMessage() != null) {
             getServer().broadcast(String.format(action.getBroadcastMessage(), name, id, item), action.getBroadcastPermission());
         }
-        if (action.isDoCommand()) {
-            getServer().dispatchCommand(getServer().getConsoleSender(), String.format(action.getCommand(), name, id, item));
+        for (String s : action.getCommands()) {
+            getServer().dispatchCommand(getServer().getConsoleSender(), String.format(s, name, id, item));
         }
     }
 }

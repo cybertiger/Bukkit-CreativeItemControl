@@ -4,25 +4,22 @@
  */
 package org.cyberiantiger.minecraft.itemcontrol.config;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  *
  * @author antony
  */
 public class Action {
-    private boolean block;
+    private boolean block = true;
     private String message;
-    private boolean doBroadcast;
-    private String broadcastPermission;
+    private String broadcastPermission = "bukkit.broadcast.admin";
     private String broadcastMessage;
-    private boolean doCommand;
-    private String command;
+    private List<String> commands = Collections.emptyList();
 
     public String getMessage() {
         return message;
-    }
-
-    public boolean isDoBroadcast() {
-        return doBroadcast;
     }
 
     public String getBroadcastPermission() {
@@ -33,12 +30,8 @@ public class Action {
         return broadcastMessage;
     }
 
-    public boolean isDoCommand() {
-        return doCommand;
-    }
-
-    public String getCommand() {
-        return command;
+    public List<String> getCommands() {
+        return commands;
     }
 
     public boolean isBlock() {
@@ -47,6 +40,6 @@ public class Action {
 
     @Override
     public String toString() {
-        return "Action{" + "block=" + block + ", message=" + message + ", doBroadcast=" + doBroadcast + ", broadcastPermission=" + broadcastPermission + ", broadcastMessage=" + broadcastMessage + ", doCommand=" + doCommand + ", command=" + command + '}';
+        return "Action{" + "block=" + block + ", message=" + message + ", broadcastPermission=" + broadcastPermission + ", broadcastMessage=" + broadcastMessage + ", commands=" + commands + '}';
     }
 }
