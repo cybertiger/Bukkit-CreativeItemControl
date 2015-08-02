@@ -13,14 +13,14 @@ import java.util.Set;
  * @author antony
  */
 public class Config {
-    private Map<String, Blacklist> blacklist = Collections.emptyMap();
+    private Map<String, Blacklist> blacklist;
     private Action unavailable;
     private Action nopermission;
     private Action blacklisted;
-    private Set<String> whitelist = Collections.emptySet();
+    private Set<String> whitelist;
 
     public Map<String, Blacklist> getBlacklist() {
-        return blacklist;
+        return (Map<String, Blacklist>) (blacklist == null ? Collections.emptyMap() : blacklist);
     }
 
     public Action getUnavailable() {
@@ -36,6 +36,6 @@ public class Config {
     }
 
     public Set<String> getWhitelist() {
-        return whitelist;
+        return (Set<String>) (whitelist == null ? Collections.emptySet() : whitelist);
     }
 }

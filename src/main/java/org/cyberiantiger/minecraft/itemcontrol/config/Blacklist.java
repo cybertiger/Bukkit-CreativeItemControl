@@ -12,9 +12,9 @@ import java.util.Set;
  * @author antony
  */
 public class Blacklist {
-    private Set<String> items = Collections.emptySet();
+    private Set<String> items;
 
     public Set<String> getItems() {
-        return items;
+        return (Set<String>) (items == null ? Collections.emptySet() : items);
     }
 }
