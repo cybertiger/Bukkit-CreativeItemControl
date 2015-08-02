@@ -1,4 +1,10 @@
 # Custom blacklists
+#
+# You can name these whatever you want, a permission with the appropriate name
+# will be created automatically.
+#
+# The lists below serve only as an example, feel free to rename, remove or
+# add lists according to your server's needs.
 blacklist:
         basic:
                 items:
