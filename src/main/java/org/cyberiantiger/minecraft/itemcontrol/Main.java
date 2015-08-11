@@ -200,7 +200,10 @@ public class Main extends JavaPlugin implements Listener {
             if (whoClicked.hasPermission(PERMISSION_BYPASS)) {
                 return;
             }
-            ItemStack expectedCursor = playerCursors.getOrDefault(whoClicked, EMPTY_CURSOR);
+            ItemStack expectedCursor = playerCursors.get(whoClicked);
+            if (expectedCursor == null) {
+                expectedCursor = EMPTY_CURSOR;
+            }
             ItemStack cursor = e.getCursor();
             CompoundTag clickedTag;
             boolean emptyCursor = cursor.isSimilar(EMPTY_CURSOR);
