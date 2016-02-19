@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.cyberiantiger.minecraft</groupId>
   <artifactId>creativeitemcontrol</artifactId>
-  <version>1.6-SNAPSHOT</version>
+  <version>1.6.1-SNAPSHOT</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.number>${user.name}</project.build.number>
@@ -40,17 +40,13 @@
         <version>2.0</version>
         <executions>
           <execution>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+            </configuration>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
-            <configuration>
-              <artifactSet>
-                <includes>
-                  <include>org.cyberiantiger.minecraft:*</include>
-                </includes>
-              </artifactSet>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -78,6 +74,7 @@
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
       <version>1.8.7-R0.1-cybertiger</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.cyberiantiger.minecraft</groupId>
@@ -85,16 +82,4 @@
       <version>2.2</version>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <repository>
-      <id>cyberiantiger.repo</id>
-      <name>CyberianTiger Maven Repository</name>
-      <url>dav:http://cyberiantiger.org/maven</url>
-    </repository>
-    <snapshotRepository>
-      <id>cyberiantiger.repo</id>
-      <name>CyberianTiger Maven Repository</name>
-      <url>dav:http://cyberiantiger.org/maven</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
