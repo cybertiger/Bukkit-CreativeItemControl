@@ -43,6 +43,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -226,9 +227,23 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerDropItem(PlayerDropItemEvent e ) {
+        Player p = e.getPlayer();
+        if (p.hasPermission(PERMISSION_BLACKLIST_BYPASS)) {
+            return;
+        }
+        Item item = e.getItemDrop();
+        CompoundTag itemTag = tools.readItemStack(item.getItemStack());
+        if (!checkBlacklist(p, itemTag)) {
+            e.setCancelled(true);
+            item.remove();
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerPickupItem(PlayerPickupItemEvent e) {
         Player p = e.getPlayer();
-        if (p.getGameMode() != GameMode.CREATIVE || p.hasPermission(PERMISSION_BLACKLIST_BYPASS)) {
+        if (p.hasPermission(PERMISSION_BLACKLIST_BYPASS)) {
             return;
         }
         Item item = e.getItem();
