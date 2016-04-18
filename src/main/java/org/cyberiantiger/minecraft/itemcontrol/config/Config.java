@@ -13,10 +13,13 @@ import java.util.Set;
  * @author antony
  */
 public class Config {
+    private int rateLimit = -1;
+    private int rateLimitTime = 1200;
     private Map<String, Blacklist> blacklist;
     private Action unavailable;
     private Action nopermission;
     private Action blacklisted;
+    private Action onRateLimit;
     private Set<String> whitelist;
 
     public Map<String, Blacklist> getBlacklist() {
@@ -35,7 +38,19 @@ public class Config {
         return blacklisted;
     }
 
+    public Action getOnRateLimit() {
+        return onRateLimit;
+    }
+
     public Set<String> getWhitelist() {
         return (Set<String>) (whitelist == null ? Collections.emptySet() : whitelist);
+    }
+
+    public int getRateLimit() {
+        return rateLimit;
+    }
+
+    public int getRateLimitTime() {
+        return rateLimitTime;
     }
 }

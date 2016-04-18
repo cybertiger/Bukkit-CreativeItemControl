@@ -1,3 +1,10 @@
+# Rate limiting (defaults to disabled)
+# Limits item clicks to rateLimit per rateLimitTime.
+# Example below for limiting to 100 item clicks or drops per 60 seconds.
+#
+# rateLimit: 100
+# rateLimitTime: 60
+
 # Custom blacklists
 #
 # You can name these whatever you want, a permission with the appropriate name
@@ -88,3 +95,10 @@ nopermission:
 # Any of the values from the unavailable action can be set here.
 blacklisted:
         message: 'You do not have permission for %2$s.'
+
+# Action when a player exceeds the item click/drop rate limit
+# Note: this check is performed first
+# This might be extremely spammy for admins.
+onRateLimit:
+        broadcastMessage: '%1$s exceeded rate limit for inventory clicks'
+        message: 'Do not click so fast!'

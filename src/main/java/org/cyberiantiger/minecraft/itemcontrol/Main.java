@@ -27,8 +27,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -74,7 +76,8 @@ public class Main extends JavaPlugin implements Listener {
     private static final String CONFIG = "config.yml";
     private static final String ITEMS = "items.yml";
 
-    private Map<Player, ItemStack> playerCursors = new WeakHashMap<Player, ItemStack>();
+    // Key is a player, can't be bothered to use generics to hide this type erasure.
+    private Map<Object, PlayerState> playerStates = new WeakHashMap<Object, PlayerState>();
     private NBTTools tools;
     private Config config;
     private ItemGroups itemGroups;
@@ -185,6 +188,7 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         loadConfig();
+        playerStates.clear();
         sender.sendMessage("CreativeItemControl " + getDescription().getVersion() + " reloaded.");
         return true;
     }
@@ -194,6 +198,14 @@ public class Main extends JavaPlugin implements Listener {
     // If cursor is EMPTY_CURSOR, item is picked up.
     // If cursor is not EMPTY_CURSOR, one or more items is dropped (spawned in).
 
+    private PlayerState getPlayerState(Object player) {
+        PlayerState result = playerStates.get(player);
+        if (result == null) {
+            playerStates.put(player, result = new PlayerState());
+        }
+        return result;
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCreativeEvent(InventoryCreativeEvent e) {
         HumanEntity whoClicked = e.getWhoClicked();
@@ -201,7 +213,16 @@ public class Main extends JavaPlugin implements Listener {
             if (whoClicked.hasPermission(PERMISSION_BYPASS)) {
                 return;
             }
-            ItemStack expectedCursor = playerCursors.get(whoClicked);
+            PlayerState state = getPlayerState(whoClicked);
+            if (!state.testClick()) {
+                Action action = config.getOnRateLimit();
+                performAction(config.getOnRateLimit(), (Player) whoClicked, null);
+                if (action.isBlock()) {
+                    e.setCancelled(true);
+                    return;
+                }
+            }
+            ItemStack expectedCursor = state.getLastItem();
             if (expectedCursor == null) {
                 expectedCursor = EMPTY_CURSOR;
             }
@@ -232,6 +253,15 @@ public class Main extends JavaPlugin implements Listener {
         if (p.hasPermission(PERMISSION_BLACKLIST_BYPASS)) {
             return;
         }
+        PlayerState state = getPlayerState(p);
+        if (!state.testClick()) {
+            Action action = config.getOnRateLimit();
+            performAction(config.getOnRateLimit(), p, null);
+            if (action.isBlock()) {
+                e.setCancelled(true);
+                return;
+            }
+        }
         Item item = e.getItemDrop();
         CompoundTag itemTag = tools.readItemStack(item.getItemStack());
         if (!checkBlacklist(p, itemTag)) {
@@ -261,9 +291,10 @@ public class Main extends JavaPlugin implements Listener {
         }
         HumanEntity whoClicked = e.getWhoClicked();
         if (whoClicked instanceof Player && whoClicked.getGameMode() == GameMode.CREATIVE) {
+            PlayerState state = getPlayerState(whoClicked);
             ItemStack stack = e.getCursor();
             if (EMPTY_CURSOR.isSimilar(stack)) {
-                playerCursors.put((Player)whoClicked, e.getCurrentItem());
+                state.setLastItem(e.getCurrentItem());
             }
         }
     }
@@ -271,7 +302,7 @@ public class Main extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void monitorInventoryClose(InventoryCloseEvent e) {
-        playerCursors.remove(e.getPlayer());
+        getPlayerState(e.getPlayer()).setLastItem(null);
     }
 
     private boolean checkMenuAccess(HumanEntity whoClicked, CompoundTag itemTag) {
@@ -355,6 +386,41 @@ public class Main extends JavaPlugin implements Listener {
         }
         for (String s : action.getCommands()) {
             getServer().dispatchCommand(getServer().getConsoleSender(), String.format(s, name, id, item));
+        }
+    }
+
+    private class PlayerState {
+        private ItemStack lastItem;
+        private final long[] clickTimes;
+        private int clickTimesOffset;
+
+        public PlayerState() {
+            if (config.getRateLimit() > 0) {
+                clickTimesOffset = 0;
+                clickTimes = new long[config.getRateLimit()];
+                Arrays.fill(clickTimes, Long.MIN_VALUE);
+            } else {
+                clickTimes = null;
+            }
+        }
+
+        public ItemStack getLastItem() {
+            return lastItem;
+        }
+
+        public void setLastItem(ItemStack lastItem) {
+            this.lastItem = lastItem;
+        }
+
+        public boolean testClick() {
+            if (clickTimes != null) {
+                long now = System.nanoTime();
+                clickTimes[clickTimesOffset++] = now;
+                if (clickTimesOffset >= clickTimes.length) 
+                    clickTimesOffset = 0;
+                return clickTimes[clickTimesOffset] < now - TimeUnit.SECONDS.toNanos(config.getRateLimitTime());
+            }
+            return true;
         }
     }
 }
