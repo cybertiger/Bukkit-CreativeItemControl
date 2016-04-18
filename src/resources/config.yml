@@ -100,5 +100,5 @@ blacklisted:
 # Note: this check is performed first
 # This might be extremely spammy for admins.
 onRateLimit:
-        broadcastMessage: '%1$s exceeded rate limit for inventory clicks'
+        broadcastMessage: '%1$s exceeded rate limit for inventory clicks or dropped items'
         message: 'Do not click so fast!'

@@ -376,8 +376,8 @@ public class Main extends JavaPlugin implements Listener {
 
     private void performAction(Action action, Player player, CompoundTag itemTag) {
         String name = player.getName();
-        String id = itemTag.getString("id");
-        String item = itemTag.toString();
+        String id = itemTag == null ? null : itemTag.getString("id");
+        String item = itemTag == null ? null : itemTag.toString();
         if (action.getMessage() != null) {
             player.sendMessage(String.format(action.getMessage(), name, id, item));
         }
