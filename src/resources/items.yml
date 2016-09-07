@@ -96,6 +96,10 @@ groups:
             'minecraft:purpur_stairs': {}
             'minecraft:purpur_slab': {}
             'minecraft:end_bricks': {}
+            'minecraft:magma': {}
+            'minecraft:nether_wart_block': {}
+            'minecraft:red_nether_brick': {}
+            'minecraft:bone_block': {}
     decoration:
         items:
             'minecraft:sapling':
@@ -280,6 +284,7 @@ groups:
                     - "{EntityTag : {id : Ozelot}}"
                     - "{EntityTag : {id : EntityHorse}}"
                     - "{EntityTag : {id : Rabbit}}"
+                    - "{EntityTag : {id : PolarBear}}"
                     - "{EntityTag : {id : Villager}}"
             'minecraft:experience_bottle': {}
             'minecraft:fire_charge': {}
